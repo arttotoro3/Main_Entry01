@@ -4,33 +4,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project NEST: The Drowned World</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Project NEST | The Drowned World</title>
+    <meta name="title" content="Project NEST | The Drowned World">
+    <meta name="description" content="인류가 가라앉은 날, 새로운 종이 깨어났습니다. 부식된 금속과 깊은 어둠 사이에서 펼쳐지는 서바이벌 넥서스.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://project-nest-drowned.vercel.app/">
+    <meta property="og:title" content="Project NEST | The Drowned World">
+    <meta property="og:description" content="가라앉은 세계의 진실을 파헤치는 차세대 생존 액션 RPG.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1518107616385-ad30833dd040?q=80&w=1200">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Project NEST | The Drowned World">
+    <meta property="twitter:description" content="가라앉은 세계의 진실을 파헤치는 차세대 생존 액션 RPG.">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
+      :root {
+        --deep-black: #010204;
+        --abyssal-cyan: #083344;
+      }
       body {
-        background-color: #020406;
-        color: #d1d5db;
+        background-color: var(--deep-black);
+        color: #94a3b8;
         font-family: 'Inter', sans-serif;
         overflow-x: hidden;
       }
-      .font-gaming {
-        font-family: 'Orbitron', sans-serif;
-      }
-      .font-mono {
-        font-family: 'JetBrains Mono', monospace;
-      }
+      .font-gaming { font-family: 'Orbitron', sans-serif; }
+      .font-mono { font-family: 'JetBrains Mono', monospace; }
       
-      /* Film Grain Effect */
-      body::before {
-        content: "";
+      /* Global Grunge Layer */
+      .grunge-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('https://grainy-gradients.vercel.app/noise.svg');
+        inset: 0;
+        background: url('https://www.transparenttextures.com/patterns/stardust.png');
         opacity: 0.15;
+        pointer-events: none;
+        z-index: 9996;
+      }
+
+      /* Film Grain */
+      .grain {
+        position: fixed;
+        inset: 0;
+        background: url('https://grainy-gradients.vercel.app/noise.svg');
+        opacity: 0.1;
         pointer-events: none;
         z-index: 9999;
       }
@@ -38,63 +62,99 @@
       /* CRT Scanlines */
       .scanlines {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          rgba(18, 16, 16, 0) 50%,
-          rgba(0, 0, 0, 0.1) 50%
-        ), linear-gradient(
-          90deg,
-          rgba(255, 0, 0, 0.02),
-          rgba(0, 255, 0, 0.01),
-          rgba(0, 0, 255, 0.02)
-        );
-        background-size: 100% 3px, 3px 100%;
+        inset: 0;
+        background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.15) 50%);
+        background-size: 100% 3px;
         pointer-events: none;
         z-index: 9998;
       }
 
-      ::-webkit-scrollbar {
-        width: 6px;
+      /* Loading Animation Overlay */
+      #loading-screen {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 1s ease-out;
       }
-      ::-webkit-scrollbar-track {
-        background: #020406;
+      .loading-bar {
+        width: 200px;
+        height: 2px;
+        background: #111;
+        margin-top: 20px;
+        position: relative;
+        overflow: hidden;
       }
-      ::-webkit-scrollbar-thumb {
-        background: #1e293b;
-        border-radius: 0px;
+      .loading-progress {
+        position: absolute;
+        top: 0; left: 0; height: 100%;
+        background: #083344;
+        width: 0%;
+        animation: progress 2.5s forwards;
       }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #334155;
+      @keyframes progress {
+        0% { width: 0%; }
+        30% { width: 45%; }
+        70% { width: 70%; }
+        100% { width: 100%; }
       }
 
-      .text-glow {
-        text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+      .glitch-effect {
+        animation: glitch 2s infinite;
       }
-      
-      .rusted-border {
-        border-image: linear-gradient(to bottom, #334155, #451a03) 1;
+      @keyframes glitch {
+        0% { transform: translate(0); }
+        1% { transform: translate(-2px, 1px); }
+        2% { transform: translate(2px, -1px); }
+        3% { transform: translate(0); }
       }
+
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: #000; }
+      ::-webkit-scrollbar-thumb { background: #1e293b; }
     </style>
     <script type="importmap">
-    {
-      "imports": {
-        "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-        "react/": "https://esm.sh/react@^19.2.3/",
-        "react": "https://esm.sh/react@^19.2.3",
-        "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-        "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-        "framer-motion": "https://esm.sh/framer-motion@^12.23.26"
-      }
-    }
-    </script>
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/client": "https://esm.sh/react-dom@^19.2.3/client",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "framer-motion": "https://esm.sh/framer-motion@^12.23.26",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
   <link rel="stylesheet" href="/index.css">
 </head>
   <body>
+    <!-- Initial Loading State -->
+    <div id="loading-screen">
+      <div class="font-gaming text-white text-xl tracking-[0.5em] glitch-effect">NEST_INITIALIZING...</div>
+      <div class="loading-bar"><div class="loading-progress"></div></div>
+      <div class="font-mono text-[8px] text-zinc-800 mt-4 uppercase">Connecting to Abyssal Core Node 04...</div>
+    </div>
+
+    <div class="grunge-overlay"></div>
     <div class="scanlines"></div>
+    <div class="grain"></div>
     <div id="root"></div>
+
+    <script>
+      window.addEventListener('load', () => {
+        const loader = document.getElementById('loading-screen');
+        setTimeout(() => {
+          loader.style.opacity = '0';
+          setTimeout(() => loader.style.display = 'none', 1000);
+        }, 2500);
+      });
+    </script>
+    <script type="module" src="./index.tsx"></script>
   <script type="module" src="/index.tsx"></script>
 </body>
 </html>

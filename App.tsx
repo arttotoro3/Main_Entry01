@@ -1,10 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Menu, X, ChevronRight, Play, Cpu, Shield, 
-  Droplets, Zap, MessageSquare, Info 
-} from 'lucide-react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import StorySection from './components/StorySection';
@@ -24,79 +20,94 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#010204] text-zinc-400 selection:bg-cyan-950/40 selection:text-cyan-200">
+    <div className="min-h-screen bg-[#010204] text-zinc-400 selection:bg-cyan-950/40 selection:text-cyan-200 antialiased">
       <Header isScrolled={isScrolled} />
       
-      <main>
+      <main className="relative z-10">
         <Hero />
         
         <div className="relative">
-          {/* Global Texture Overlay */}
-          <div className="absolute inset-0 pointer-events-none z-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/black-paper.png')]" />
+          {/* Subtle Background Pattern */}
+          <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]" />
           
           <StorySection />
           
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-900 to-transparent" />
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-900/50 to-transparent" />
           
           <Features />
           
+          {/* Interactive Nexus Section */}
           <section id="nexus" className="py-40 px-6 relative overflow-hidden bg-black">
              <div className="absolute inset-0 bg-cyan-950/5 mix-blend-overlay" />
              <div className="max-w-7xl mx-auto relative z-10 flex flex-col lg:flex-row items-center gap-20">
-              <div className="flex-1 space-y-8">
+              <motion.div 
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="flex-1 space-y-8"
+              >
                 <div className="space-y-4">
-                  <span className="text-cyan-950 font-mono tracking-[0.6em] uppercase text-[10px] block">Encrypted Transmission // Recv</span>
+                  <span className="text-cyan-900 font-mono tracking-[0.6em] uppercase text-[10px] block">Transmission // Incoming_Data</span>
                   <h2 className="text-5xl md:text-7xl font-gaming font-black tracking-tighter leading-none text-white">
                     NEXUS <br /><span className="text-zinc-800">INTELLIGENCE</span>
                   </h2>
                 </div>
                 <p className="text-zinc-500 text-xl font-light leading-relaxed max-w-xl">
-                  심해의 거대한 신경망, 넥서스 지능과의 직접 교신이 가능합니다. 
-                  가라앉은 세계의 진실, 오염된 데이터, 그리고 다음 목적지를 분석하십시오.
+                  넥서스 지능은 가라앉은 세계의 살아있는 역사입니다. 
+                  당신의 장비와 동기화하여 고대 데이터를 해독하고 다음 목표를 설정하십시오.
                 </p>
-                <div className="flex items-center gap-5 p-4 bg-zinc-950 border border-zinc-900 rounded-sm inline-flex">
-                  <div className="w-10 h-10 flex items-center justify-center bg-zinc-900">
-                    <Cpu size={20} className="text-cyan-900" />
+                <div className="inline-flex items-center gap-5 p-4 bg-zinc-950/50 border border-zinc-900 rounded-sm">
+                  <div className="w-10 h-10 flex items-center justify-center bg-zinc-900 border border-zinc-800">
+                    <div className="w-2 h-2 bg-cyan-700 rounded-full animate-pulse" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Biometric Sync</p>
-                    <p className="text-xs font-mono text-zinc-400">OPERATOR_LOGGED_IN: [SECURE]</p>
+                    <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Neural Sync Status</p>
+                    <p className="text-xs font-mono text-cyan-900 font-bold uppercase tracking-tight">OPERATOR_ID: SECURE_ALPHA</p>
                   </div>
                 </div>
-              </div>
-              <div className="flex-1 w-full relative">
-                <div className="absolute -inset-1 bg-cyan-950/20 blur-2xl rounded-lg" />
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="flex-1 w-full relative"
+              >
+                <div className="absolute -inset-1 bg-cyan-950/10 blur-3xl rounded-lg" />
                 <NexusAI />
-              </div>
+              </motion.div>
             </div>
           </section>
 
-          <section id="media" className="py-40 bg-[#010204]">
-            <div className="max-w-7xl mx-auto px-6 mb-20 text-center">
+          {/* Media Section */}
+          <section id="media" className="py-40 bg-black">
+            <div className="max-w-7xl mx-auto px-6 mb-24 text-center">
+              <span className="text-zinc-800 font-mono text-[10px] tracking-[0.5em] uppercase mb-4 block">Visual Recon Logs</span>
               <h2 className="text-4xl font-gaming font-black tracking-widest uppercase text-white mb-2">
-                RECON <span className="text-zinc-800">FOOTAGE</span>
+                RECON <span className="text-zinc-900">FOOTAGE</span>
               </h2>
-              <div className="w-12 h-1 bg-red-950 mx-auto" />
+              <div className="w-20 h-0.5 bg-red-950/50 mx-auto mt-6" />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <motion.div 
                   key={i}
-                  whileHover={{ scale: 1.01 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  whileHover={{ y: -5 }}
                   className="aspect-video bg-zinc-950 border border-zinc-900 overflow-hidden group cursor-pointer relative"
                 >
                   <img 
-                    src={`https://images.unsplash.com/photo-${1500000000000 + (i * 10000)}?auto=format&fit=crop&q=80&w=800`} 
-                    alt="Gameplay recon" 
-                    className="w-full h-full object-cover grayscale opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700"
+                    src={`https://images.unsplash.com/photo-${1500000000000 + (i * 12345)}?auto=format&fit=crop&q=80&w=800`} 
+                    alt={`Site Recon ${i}`} 
+                    className="w-full h-full object-cover grayscale opacity-30 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
-                  <div className="absolute bottom-4 left-4 font-mono text-[8px] text-zinc-500 uppercase tracking-[0.3em]">
-                    Site_{i * 101} // Decrypted
-                  </div>
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                     <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+                  <div className="absolute bottom-4 left-4 font-mono text-[8px] text-zinc-600 uppercase tracking-[0.3em]">
+                    ZONE_ARCHIVE_{i * 101} // [DECRYPTED]
                   </div>
                 </motion.div>
               ))}
